@@ -2,6 +2,30 @@ public class LList<T> implements List<T> {
     private DLLNode<T> _head;
     private int _size;
 
+    private class MyIterator implements Iterator<T> {
+	private DLLNode<T> _curr;
+	public MyIterator() {
+	    _curr = _head;
+	}
+
+	public boolean hasNext() {
+	    return _curr.getNext() != null;
+	}
+
+	public T next() {
+	    if ( hasNext() ) {
+		_curr = _curr.getNext();
+		return _curr.getCargo();
+	    }
+	    throw new NoSuchElementException;
+	}
+
+	public void remove() {
+	    //next, rm, rm -> throws exception, each rm call follows next, not before
+	}
+
+    }
+
     public LList( ) {
 	_head = null;
 	_size = 0;
@@ -130,6 +154,10 @@ public class LList<T> implements List<T> {
 	}
 	retStr += "NULL";
 	return retStr;
+    }
+
+    public Iterator<T> iterator() {
+
     }
 
     public static void main( String[] args ) {
