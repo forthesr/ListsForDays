@@ -1,6 +1,7 @@
 public class LList<T> implements List<T> {
     private DLLNode<T> _head;
     private int _size;
+    private boolean _pass;
 
     private class MyIterator implements Iterator<T> {
 	private DLLNode<T> _curr;
@@ -15,13 +16,18 @@ public class LList<T> implements List<T> {
 	public T next() {
 	    if ( hasNext() ) {
 		_curr = _curr.getNext();
+		_pass = true;
 		return _curr.getCargo();
 	    }
 	    throw new NoSuchElementException;
 	}
 
 	public void remove() {
-	    //next, rm, rm -> throws exception, each rm call follows next, not before
+	    if (_pass) {
+		_curr = _curr.getNext();
+	    }
+
+	    else throw new IllegalStateException;
 	}
 
     }
@@ -157,7 +163,7 @@ public class LList<T> implements List<T> {
     }
 
     public Iterator<T> iterator() {
-
+	return new MyIterator();
     }
 
     public static void main( String[] args ) {
