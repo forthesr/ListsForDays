@@ -45,7 +45,8 @@ public class LList<T> implements List<T> {
 		if ( next != null ) {
 		    _prev.getNext().setPrev( prev );
 		}
-		 _size--;
+		_size--;
+		_pass = false;
 	    }
 	    else throw new IllegalStateException();
 	}
