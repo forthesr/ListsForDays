@@ -1,33 +1,53 @@
+// Team ListsForDays: Manish Saha, Lisa Shi
+// APCS2 pd05
+// HW18 -- For Each Is the Goal
+// 2016-03-24
+
+import java.util.Iterator;
+
 public class LList<T> implements List<T> {
     private DLLNode<T> _head;
     private int _size;
-    private boolean _pass;
 
     private class MyIterator implements Iterator<T> {
 	private DLLNode<T> _curr;
+	private DLLNode<T> _prev;
+	private boolean _pass;
+	
 	public MyIterator() {
 	    _curr = _head;
+	    _prev = null;
+	    _pass = false;
 	}
 
 	public boolean hasNext() {
-	    return _curr.getNext() != null;
+	    return _curr != null;
 	}
 
 	public T next() {
 	    if ( hasNext() ) {
+		_prev = _curr;
 		_curr = _curr.getNext();
 		_pass = true;
-		return _curr.getCargo();
+		return _prev.getCargo();
 	    }
-	    throw new NoSuchElementException;
+	    throw new NullPointerException();
 	}
 
 	public void remove() {
 	    if (_pass) {
-		_curr = _curr.getNext();
+		DLLNode<T> prev = _prev.getPrev();
+		DLLNode<T> next = _prev.getNext();
+	    
+		if ( prev != null ) {
+		    _prev.getPrev().setNext( next );
+		}
+		if ( next != null ) {
+		    _prev.getNext().setPrev( prev );
+		}
+		 _size--;
 	    }
-
-	    else throw new IllegalStateException;
+	    else throw new IllegalStateException();
 	}
 
     }
@@ -153,7 +173,7 @@ public class LList<T> implements List<T> {
     
     public String toString() { 
 	String retStr = "NULL<-HEAD->";
-	DLLNode<T> tmp = _head; //init tr
+	DLLNode<T> tmp = _head;
 	while( tmp != null ) {
 	    retStr += "<-" + tmp.getCargo() + "->";
 	    tmp = tmp.getNext();
